@@ -1,4 +1,4 @@
-const { Text, Relationship} = require('@keystonejs/fields');
+const { Text, Relationship, Slug } = require('@keystonejs/fields');
 const { Markdown } = require('@keystonejs/fields-markdown');
 
 module.exports = {
@@ -6,6 +6,10 @@ module.exports = {
         name: {
             type: Text,
             isRequired: true,
+        },
+        url: {
+            type: Slug,
+            from: 'name'
         },
         category: {
             type: Relationship,

@@ -1,5 +1,5 @@
-import { Fragment } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 
@@ -8,22 +8,7 @@ const ALL_RECIPES_QUERY = gql`
     allRecipes {
       id
       name
-      category {
-        name
-      }
-      ingredients {
-        name
-        food {
-          name
-        }
-        quantity
-        measurement
-        unitOfMeasure
-      }
-      method
-      tags {
-        name
-      }
+      url
     }
   }
 `;
@@ -33,17 +18,21 @@ const Home = () => {
 
   if(loading) return <p>Loading...</p>
   if(error) return <p>Error! ${error.message}</p>
-  if(!data) return <p>No Recipes here!</p>
 
   return (
-    <div>
+    <div style={{ padding: '20px 50px'}}>
       <Head>
         <title>Avo' Go</title>
       </Head>
+      <h1>Avo' Go</h1>
+      <hr />
+      <br />
+      {!data.allRecipes.length && <p>No Recipes here!</p> }
       {data.allRecipes.map(recipe => {
-        console.log(recipe);
         return(
-          <p key={recipe.id}>{recipe.name}</p>
+          <Link key={recipe.id} href={{
+            pathname: `/recipes/${encodeURIComponent(recipe.url)}`
+          }}>{recipe.name}</Link>
         )
       })}
     </div>
